@@ -1,0 +1,15 @@
+{
+ "ShellName": "shell.run",
+ "Order": "1",
+ "track": [
+  {
+   "sqlScriptName": " qwe",
+   "directory": "sdf",
+   "credentials": [
+    {
+     "credentialid": "sdf"
+    }
+   ]
+  }
+ ]
+}
