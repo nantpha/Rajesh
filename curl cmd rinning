@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class CurlCommandLooper {
+
+    public static void main(String[] args) {
+        String curlCmd = "curl -s https://your-api-url.com/endpoint"; // Replace with your actual curl command
+
+        while (true) {
+            try {
+                ProcessBuilder builder = new ProcessBuilder("bash", "-c", curlCmd);
+                builder.redirectErrorStream(true);
+                Process process = builder.start();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                reader.close();
+
+                String output = response.toString();
+
+                // Change this condition to fit your "good" response requirement
+                if (output.contains("SUCCESS") || output.contains("\"status\":200")) {
+                    System.out.println("Got good response. Stopping.");
+                    break;
+                }
+
+                System.out.println("Response not good. Retrying in 40 seconds...");
+                Thread.sleep(40000);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
